@@ -24,6 +24,8 @@
 
 利用librosa进行数据提取：
 librosa是一个python音频处理的一个包，它其实只是一个wrapper,是需要后端，后端应该是ffmpeg.简单的使用它：
+
+
       samples,sr= librosa.load (fullFileName,mono=False,sr=44100)
 这样取到的samples就是我们想要的二维数组。分别是通道与采样点两维。我们可以通过加维将二维变成三维，使之可以满足我们的训练要求：
 samples=samples[np.newaxis,:,:]
@@ -34,7 +36,9 @@ samples=samples[np.newaxis,:,:]
 kapre是github上的一个音频预处理包，可以通过pip进行安装。
 
 它的简单模型如下：
- input_shape = (channelCount, sampleCount) 
+
+
+		input_shape = (channelCount, sampleCount) 
         sr = 44100
         model = Sequential()
         model.add(Melspectrogram(n_dft=512, n_hop=256, input_shape=input_shape,
@@ -72,6 +76,8 @@ kapre是github上的一个音频预处理包，可以通过pip进行安装。
         model.save(modelName)
 
 采用的是梅尔声谱作为主要层，还AdditiveNoise增加噪声，最后再拉平输出分类结果。中间可以根据需要添加卷积层（自己随便加）如：
+
+
         model.add(Convolution2D(32, 3, 3))
         model.add(BatchNormalization(axis=1 ))
         model.add(ELU(alpha=1.0))  
@@ -79,7 +85,9 @@ kapre是github上的一个音频预处理包，可以通过pip进行安装。
         model.add(Dropout(0.25))    
 
 最后来使用模型：
-def test():
+
+
+	def test():
         model = load_model(modelName, custom_objects={'Melspectrogram':kapre.time_frequency.Melspectrogram,'AdditiveNoise':kapre.augmentation.AdditiveNoise,'Normalization2D':kapre.utils.Normalization2D})        
         x,y=loadData(testDataPath)
         score=model.evaluate(x,y, verbose=0)

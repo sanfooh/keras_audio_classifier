@@ -38,7 +38,7 @@ kapre是github上的一个音频预处理包，可以通过pip进行安装。
 它的简单模型如下：
 
 
-		input_shape = (channelCount, sampleCount) 
+	input_shape = (channelCount, sampleCount) 
         sr = 44100
         model = Sequential()
         model.add(Melspectrogram(n_dft=512, n_hop=256, input_shape=input_shape,
